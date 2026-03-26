@@ -442,13 +442,14 @@
       <p class="signup-sub">Leave your email below. You'll be notified the moment the whitepaper goes live. Nothing else. No list. No funnel.</p>
 
       <div class="form-wrapper">
-        <form id="signup-form">
+        <form id="signup-form" action="https://app.kit.com/forms/9252068/subscriptions" method="post" target="kit-frame">
           <div class="input-group" id="input-group">
-            <input type="email" id="email-input" placeholder="your@email.com" required autocomplete="email">
+            <input type="email" name="email_address" id="email-input" placeholder="your@email.com" required autocomplete="email">
             <button type="submit">Notify Me</button>
           </div>
           <p class="form-note">One email. When it's ready. That's it.</p>
         </form>
+        <iframe name="kit-frame" style="display:none"></iframe>
 
         <div class="success-message" id="success-message">
           <div class="success-icon">
@@ -477,38 +478,20 @@
   </div>
 
   <script>
-    // Form handling
     const form = document.getElementById('signup-form');
-    const inputGroup = document.getElementById('input-group');
     const successMessage = document.getElementById('success-message');
     const emailInput = document.getElementById('email-input');
+    const submitBtn = form.querySelector('button');
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
+    form.addEventListener('submit', function() {
+      // Brief delay to let the form POST to the hidden iframe
+      submitBtn.textContent = '...';
+      submitBtn.disabled = true;
 
-      const email = emailInput.value.trim();
-      if (!email) return;
-
-      // TODO: Replace with your email service endpoint
-      // Options: Mailchimp, ConvertKit, Buttondown, Formspree, etc.
-      // Example Formspree: fetch('https://formspree.io/f/YOUR_FORM_ID', { method: 'POST', body: new FormData(form) })
-      
-      // For now, simulate success and log the email
-      console.log('Signup email:', email);
-
-      // Show success state
-      form.style.display = 'none';
-      successMessage.classList.add('visible');
-
-      // Optional: Send to a simple endpoint
-      // Uncomment and configure when ready:
-      /*
-      fetch('https://formspree.io/f/YOUR_FORM_ID', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
-      });
-      */
+      setTimeout(function() {
+        form.style.display = 'none';
+        successMessage.classList.add('visible');
+      }, 800);
     });
   </script>
 
